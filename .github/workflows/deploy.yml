@@ -46,6 +46,7 @@ jobs:
       - name: Terraform Apply
         run: terraform apply -auto-approve
 
+
       - name: Build Frontend
         run: |
           cd frontend
