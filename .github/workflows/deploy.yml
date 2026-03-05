@@ -1,4 +1,4 @@
-name: Deploy Backend
+name: Deploy Backend & Frontend
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -30,17 +30,15 @@ jobs:
         run: docker build -f ./backend/Dockerfile -t backend-app ./backend
 
       - name: Tag Docker Image
-        run: |
-          docker tag backend-app:latest 314103481823.dkr.ecr.ap-south-1.amazonaws.com/backend-app:latest
+        run: docker tag backend-app:latest 314103481823.dkr.ecr.ap-south-1.amazonaws.com/backend-app:latest
 
       - name: Push Docker Image
-        run: |
-          docker push 314103481823.dkr.ecr.ap-south-1.amazonaws.com/backend-app:latest
+        run: docker push 314103481823.dkr.ecr.ap-south-1.amazonaws.com/backend-app:latest
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: 1.5.7   # or your desired version
+          terraform_version: 1.5.7
 
       - name: Terraform Init
         run: terraform init
@@ -53,6 +51,7 @@ jobs:
           cd frontend
           npm install
           npm run build
+          npm run export
 
-      - name: Upload Frontend to S3
-        run: aws s3 sync ./frontend/ s3://pg-agi-frontend-dev/ --delete
+      - name: Sync Frontend to S3
+        run: aws s3 sync ./frontend/out/ s3://pg-agi-frontend-dev/ --delete
