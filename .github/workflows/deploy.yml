@@ -30,6 +30,7 @@ jobs:
         run: |
           docker build -f backend/Dockerfile -t backend-app ./backend
 
+
       - name: Tag Docker Image
         run: |
           docker tag backend-app:latest 314103481823.dkr.ecr.ap-south-1.amazonaws.com/backend-app:latest
