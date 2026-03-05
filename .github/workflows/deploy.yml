@@ -13,6 +13,9 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
+      - name: Show Files (Debug)
+        run: ls -R
+
       - name: Configure AWS
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -26,7 +29,7 @@ jobs:
           | docker login --username AWS --password-stdin 314103481823.dkr.ecr.ap-south-1.amazonaws.com
 
       - name: Build Docker image
-        run: docker build -t backend-app -f backend/Dockerfile backend
+        run: docker build -t backend-app -f backend/Dockerfile ./backend
 
       - name: Tag Image
         run: docker tag backend-app:latest 314103481823.dkr.ecr.ap-south-1.amazonaws.com/backend-app:latest
