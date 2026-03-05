@@ -36,3 +36,12 @@ jobs:
       - name: Push Docker Image
         run: |
           docker push 314103481823.dkr.ecr.ap-south-1.amazonaws.com/backend-app:latest
+
+      - name: Build Frontend
+        run: |
+          cd frontend
+          npm install
+          npm run build
+
+      - name: Upload Frontend to S3
+        run: aws s3 sync ./frontend/ s3://pg-agi-frontend-dev/ --delete
