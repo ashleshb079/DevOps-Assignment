@@ -43,10 +43,10 @@ jobs:
           terraform_version: 1.5.7   # or your desired version
 
       - name: Terraform Init
-        run: terraform -chdir=terraform/envs/dev init
+        run: terraform init
 
       - name: Terraform Apply
-        run: terraform -chdir=terraform/envs/dev apply -auto-approve
+        run: terraform apply -auto-approve
 
       - name: Build Frontend
         run: |
