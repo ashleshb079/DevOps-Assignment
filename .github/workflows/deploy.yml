@@ -6,33 +6,41 @@ on:
       - main
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
 
-      - name: Show Files (Debug)
-        run: ls -R
+    - name: Checkout Repository
+      uses: actions/checkout@v3
 
-      - name: Configure AWS
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-south-1
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ap-south-1
 
-      - name: Login to ECR
-        run: |
-          aws ecr get-login-password --region ap-south-1 \
-          | docker login --username AWS --password-stdin 314103481823.dkr.ecr.ap-south-1.amazonaws.com
+    - name: Login to Amazon ECR
+      run: |
+        aws ecr get-login-password --region ap-south-1 | \
+        docker login --username AWS --password-stdin 314103481823.dkr.ecr.ap-south-1.amazonaws.com
 
-      - name: Build Docker image
-        run: docker build -t backend-app ./backend/Dockerfile
+    - name: Build Docker Image
+      run: |
+        docker build -t backend-app ./backend
 
-      - name: Tag Image
-        run: docker tag backend-app:latest 314103481823.dkr.ecr.ap-south-1.amazonaws.com/backend-app:latest
+    - name: Tag Docker Image
+      run: |
+        docker tag backend-app:latest 314103481823.dkr.ecr.ap-south-1.amazonaws.com/backend-app:latest
 
-      - name: Push Image
-        run: docker push 314103481823.dkr.ecr.ap-south-1.amazonaws.com/backend-app:latests
+    - name: Push Docker Image to ECR
+      run: |
+        docker push 314103481823.dkr.ecr.ap-south-1.amazonaws.com/backend-app:latest
+
+    - name: Deploy to ECS (Force New Deployment)
+      run: |
+        aws ecs update-service \
+          --cluster backend-dev-cluster \
+          --service backend-dev-service \
+          --force-new-deployment
