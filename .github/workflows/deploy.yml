@@ -43,5 +43,6 @@ jobs:
           npm install
           npm run build
 
+
       - name: Upload Frontend to S3
         run: aws s3 sync ./frontend/ s3://pg-agi-frontend-dev/ --delete
