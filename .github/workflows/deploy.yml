@@ -37,6 +37,11 @@ jobs:
         run: |
           docker push 314103481823.dkr.ecr.ap-south-1.amazonaws.com/backend-app:latest
 
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.7   # or your desired version
+
       - name: Terraform Init
         run: terraform -chdir=terraform/envs/dev init
 
