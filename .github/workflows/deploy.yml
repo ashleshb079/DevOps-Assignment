@@ -37,6 +37,12 @@ jobs:
         run: |
           docker push 314103481823.dkr.ecr.ap-south-1.amazonaws.com/backend-app:latest
 
+      - name: Terraform Init
+        run: terraform -chdir=terraform/envs/dev init
+
+      - name: Terraform Apply
+        run: terraform -chdir=terraform/envs/dev apply -auto-approve
+
       - name: Build Frontend
         run: |
           cd frontend
