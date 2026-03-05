@@ -29,10 +29,10 @@ jobs:
           | docker login --username AWS --password-stdin 314103481823.dkr.ecr.ap-south-1.amazonaws.com
 
       - name: Build Docker image
-        run: docker build -t backend-app -f backend/Dockerfile ./backend
+        run: docker build -t backend-app ./backend
 
       - name: Tag Image
         run: docker tag backend-app:latest 314103481823.dkr.ecr.ap-south-1.amazonaws.com/backend-app:latest
 
       - name: Push Image
-        run: docker push 314103481823.dkr.ecr.ap-south-1.amazonaws.com/backend-app:latest
+        run: docker push 314103481823.dkr.ecr.ap-south-1.amazonaws.com/backend-app:latests
