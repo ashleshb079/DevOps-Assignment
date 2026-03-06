@@ -42,9 +42,11 @@ jobs:
 
       - name: Terraform Init
         run: terraform init
+        working-directory: infrastructure/dev
 
       - name: Terraform Apply
         run: terraform apply -auto-approve
+        working-directory: infrastructure/dev
 
 
       - name: Build Frontend
