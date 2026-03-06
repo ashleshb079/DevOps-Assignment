@@ -238,34 +238,41 @@ output "alb_dns_name" {
 
 
 #######################
-# S3 Bucket for Frontend
+# S3 Bucket
 #######################
 resource "aws_s3_bucket" "frontend" {
-  bucket = "pg-agi-frontend-dev"  # Change per environment
-  acl    = "public-read"
+  bucket = "pg-agi-frontend-dev"
+}
 
-  website {
-    index_document = "index.html"
-    error_document = "index.html"
+#######################
+# Website configuration
+#######################
+resource "aws_s3_bucket_website_configuration" "frontend_site" {
+  bucket = aws_s3_bucket.frontend.id
+
+  index_document {
+    suffix = "index.html"
   }
 
-  tags = {
-    Name = "Frontend Bucket - Dev"
+  error_document {
+    key = "index.html"
   }
 }
 
-# Public-read bucket policy
+#######################
+# Public bucket policy
+#######################
 resource "aws_s3_bucket_policy" "frontend_policy" {
   bucket = aws_s3_bucket.frontend.id
+
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
       {
-        Sid       = "PublicReadGetObject",
-        Effect    = "Allow",
-        Principal = "*",
-        Action    = ["s3:GetObject"],
-        Resource  = "${aws_s3_bucket.frontend.arn}/*"
+        Effect = "Allow"
+        Principal = "*"
+        Action = "s3:GetObject"
+        Resource = "${aws_s3_bucket.frontend.arn}/*"
       }
     ]
   })
