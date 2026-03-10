@@ -56,7 +56,7 @@ jobs:
           cd frontend
           npm install
           npm run build
-          npm run export
+          
           
 
       - name: Sync Frontend to S3
