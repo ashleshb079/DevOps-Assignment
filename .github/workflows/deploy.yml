@@ -57,6 +57,7 @@ jobs:
           npm install
           npm run build
           npm run export
+          
 
       - name: Sync Frontend to S3
         run: aws s3 sync ./frontend/out/ s3://pg-agi-frontend-dev/ --delete
