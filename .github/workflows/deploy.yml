@@ -37,13 +37,19 @@ jobs:
       - name: Push Docker Image
         run: docker push 121861012711.dkr.ecr.ap-south-1.amazonaws.com/backendapp:latest
 
-      -  name: Set Environment
-         run: |
-           if [[ "${GITHUB_REF_NAME}" == "dev" ]]; then
-             echo "TF_VAR=dev" >> $GITHUB_ENV
-           else
-             echo "TF_VAR=staging" >> $GITHUB_ENV
-           fi
+      - name: Set Environment
+        run: |
+          if [[ "${GITHUB_REF_NAME}" == "dev" ]]; then
+            echo "ENV=dev" >> $GITHUB_ENV
+            echo "TF_VAR_env=dev" >> $GITHUB_ENV
+          else
+            echo "ENV=staging" >> $GITHUB_ENV
+            echo "TF_VAR_env=staging" >> $GITHUB_ENV
+          fi
+      - name: Debug Terraform path
+        run: |
+          echo "ENV=$ENV"
+          ls -R infrastructure
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
