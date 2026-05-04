@@ -26,16 +26,16 @@ jobs:
       - name: Login to ECR
         run: |
           aws ecr get-login-password --region ap-south-1 \
-          | docker login --username AWS --password-stdin 314103481823.dkr.ecr.ap-south-1.amazonaws.com
+          | docker login --username AWS --password-stdin 121861012711.dkr.ecr.ap-south-1.amazonaws.com
 
       - name: Build Docker Image
         run: docker build -f ./backend/Dockerfile -t backend-app ./backend
 
       - name: Tag Docker Image
-        run: docker tag backend-app:latest 314103481823.dkr.ecr.ap-south-1.amazonaws.com/backend-app:latest
+        run: docker tag backendapp:latest 121861012711.dkr.ecr.ap-south-1.amazonaws.com/backendapp:latest
 
       - name: Push Docker Image
-        run: docker push 314103481823.dkr.ecr.ap-south-1.amazonaws.com/backend-app:latest
+        run: docker push 121861012711.dkr.ecr.ap-south-1.amazonaws.com/backendapp:latest
 
       -  name: Set Environment
          run: |
