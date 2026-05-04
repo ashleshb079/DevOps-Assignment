@@ -241,7 +241,7 @@ output "alb_dns_name" {
 # S3 Bucket
 #######################
 resource "aws_s3_bucket" "frontend" {
-  bucket = "pg-agi-frontend-${var.env}"
+  bucket = "pg-agi-frontend-env-${var.env}"
 }
 
 #######################
