@@ -40,9 +40,9 @@ jobs:
       -  name: Set Environment
          run: |
            if [[ "${GITHUB_REF_NAME}" == "dev" ]]; then
-             echo "ENV=dev" >> $GITHUB_ENV
+             echo "TF_VAR=dev" >> $GITHUB_ENV
            else
-             echo "ENV=staging" >> $GITHUB_ENV
+             echo "TF_VAR=staging" >> $GITHUB_ENV
            fi
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
