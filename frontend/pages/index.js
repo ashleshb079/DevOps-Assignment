@@ -5,22 +5,39 @@ import axios from 'axios';
 export default function Home() {
   const [message, setMessage] = useState('Loading...');
   const [status, setStatus] = useState('');
+  const [apiUrl, setApiUrl] = useState('');
 
   useEffect(() => {
+    const API = process.env.NEXT_PUBLIC_API_URL;
+
+    console.log("API URL:", API); // DEBUG check
+
+    if (!API) {
+      setStatus('API URL not configured');
+      setMessage('Missing backend configuration');
+      return;
+    }
+
+    setApiUrl(API);
+
     const fetchData = async () => {
       try {
-        // First check if backend is healthy
-        const healthCheck = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/health`);
-        
+        // Health check
+        const healthCheck = await axios.get(`${API}/api/health`);
+
         if (healthCheck.data.status === 'healthy') {
           setStatus('Backend is connected!');
-          // Then fetch the message
-          const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/message`);
+
+          // Fetch message
+          const response = await axios.get(`${API}/api/message`);
           setMessage(response.data.message);
+        } else {
+          setStatus('Backend not healthy');
+          setMessage('Health check failed');
         }
       } catch (error) {
-        setMessage('Failed to connect to the backend');
         setStatus('Backend connection failed');
+        setMessage('Failed to connect to backend');
         console.error('Error:', error);
       }
     };
@@ -37,16 +54,24 @@ export default function Home() {
       </Head>
 
       <main>
-        <h1>DevOps Assignment</h1>
+        <h1>DevOps Assignments</h1>
+
         <div className="status">
-          <p>Status: <span className={status.includes('connected') ? 'success' : 'error'}>{status}</span></p>
+          <p>
+            Status:{' '}
+            <span className={status.includes('connected') ? 'success' : 'error'}>
+              {status}
+            </span>
+          </p>
         </div>
+
         <div className="message-box">
           <h2>Backend Message:</h2>
           <p>{message}</p>
         </div>
+
         <div className="info">
-          <p>Backend URL: {process.env.NEXT_PUBLIC_API_URL}</p>
+          <p>Backend URL: {apiUrl}</p>
         </div>
       </main>
 
