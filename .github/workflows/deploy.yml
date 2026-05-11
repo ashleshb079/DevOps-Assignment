@@ -70,8 +70,8 @@ jobs:
           cd frontend
           npm install
           npm run build
-         env:
-           NEXT_PUBLIC_API_URL: https://d2b4juob8ltmwr.cloudfront.net
+        env:
+          NEXT_PUBLIC_API_URL: https://d2b4juob8ltmwr.cloudfront.net
           
           
 
