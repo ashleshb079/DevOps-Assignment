@@ -10,6 +10,10 @@ resource "aws_vpc" "main" {
   cidr_block           = "10.0.0.0/16"
   enable_dns_support   = true
   enable_dns_hostnames = true
+
+  tags = {
+    Name = "backend-staging-vpc"
+  }
 }
 
 resource "aws_internet_gateway" "igw" {
@@ -181,14 +185,14 @@ resource "aws_ecs_task_definition" "task" {
   family                   = "backend-staging-task"
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
-  cpu                      = "256"
-  memory                   = "512"
+  cpu                      = "512"
+  memory                   = "1024"
   execution_role_arn       = aws_iam_role.ecs_exec_role.arn
 
   container_definitions = jsonencode([
     {
       name  = "backend"
-      image = "314103481823.dkr.ecr.ap-south-1.amazonaws.com/backend-app:latest"
+      image = "121861012711.dkr.ecr.ap-south-1.amazonaws.com/backendapp:latest"
       portMappings = [{
         containerPort = 5000
       }]
@@ -241,17 +245,19 @@ output "alb_dns_name" {
 # S3 Bucket - Staging (Private)
 #######################
 resource "aws_s3_bucket" "frontend_staging" {
-  bucket = "pg-agi-frontend-staging"
-
-  # Optional: enable versioning for staging
-  versioning {
-    enabled = true
-  }
-
-  # Ensure block all public access
-  acl = "private"
+  bucket        = "pg-agi-frontend-env-staging"
+  force_destroy = true
 }
-#######################
+
+resource "aws_s3_bucket_versioning" "frontend_staging" {
+  bucket = aws_s3_bucket.frontend_staging.id
+
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+#################
 # Website configuration (if needed)
 #######################
 resource "aws_s3_bucket_website_configuration" "frontend_site" {

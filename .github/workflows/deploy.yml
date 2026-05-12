@@ -42,9 +42,11 @@ jobs:
           if [[ "${GITHUB_REF_NAME}" == "dev" ]]; then
             echo "ENV=dev" >> $GITHUB_ENV
             echo "TF_VAR_env=dev" >> $GITHUB_ENV
+            echo "FRONTEND_URL=https://d2b4juob8ltmwr.cloudfront.net" >> $GITHUB_ENV
           else
             echo "ENV=staging" >> $GITHUB_ENV
             echo "TF_VAR_env=staging" >> $GITHUB_ENV
+            echo "FRONTEND_URL=https://d3umkbb4uop226.cloudfront.net" >> $GITHUB_ENV
           fi
       - name: Debug Terraform path
         run: |
@@ -71,7 +73,7 @@ jobs:
           npm install
           npm run build
         env:
-          NEXT_PUBLIC_API_URL: https://d2b4juob8ltmwr.cloudfront.net
+          NEXT_PUBLIC_API_URL: ${{ env.FRONTEND_URL }}
           
           
 
