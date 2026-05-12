@@ -189,10 +189,19 @@ resource "aws_ecs_task_definition" "task" {
     {
       name  = "backend"
       image = "121861012711.dkr.ecr.ap-south-1.amazonaws.com/backendapp:latest"
+
       portMappings = [{
         containerPort = 5000
       }]
-      
+
+      logConfiguration = {
+        logDriver = "awslogs"
+        options = {
+          awslogs-group         = "/ecs/backend-dev"
+          awslogs-region        = "ap-south-1"
+          awslogs-stream-prefix = "backend"
+        }
+      }
     }
   ])
 }
