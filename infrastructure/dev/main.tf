@@ -176,6 +176,10 @@ resource "aws_iam_role_policy_attachment" "ecs_exec_policy" {
 #######################
 # ECS Task Definition
 #######################
+resource "aws_cloudwatch_log_group" "ecs_logs" {
+  name              = "/ecs/backend-dev"
+  retention_in_days = 7
+}
 
 resource "aws_ecs_task_definition" "task" {
   family                   = "backend-dev-task"
