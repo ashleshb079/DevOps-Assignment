@@ -66,12 +66,17 @@ jobs:
         run: terraform apply -auto-approve
         working-directory: infrastructure/${{ env.ENV }}
 
+      - name: Clean Frontend Build
+        run: |
+          rm -rf frontend/out
+          rm -rf frontend/.next
 
       - name: Build Frontend
         run: |
           cd frontend
           npm install
           npm run build
+          npm run export
         env:
           NEXT_PUBLIC_API_URL: ${{ env.FRONTEND_URL }}
           
