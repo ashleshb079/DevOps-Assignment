@@ -200,6 +200,7 @@ resource "aws_ecs_task_definition" "task" {
           awslogs-group         = "/ecs/backend-dev"
           awslogs-region        = "ap-south-1"
           awslogs-stream-prefix = "backend"
+          awslogs-create-group  = "true"
         }
       }
     }
