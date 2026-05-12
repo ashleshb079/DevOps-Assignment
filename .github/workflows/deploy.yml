@@ -76,7 +76,7 @@ jobs:
           cd frontend
           npm install
           npm run build
-          npm run export
+
         env:
           NEXT_PUBLIC_API_URL: ${{ env.FRONTEND_URL }}
           
