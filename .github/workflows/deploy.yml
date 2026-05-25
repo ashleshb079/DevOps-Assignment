@@ -28,6 +28,8 @@ jobs:
           aws ecr get-login-password --region ap-south-1 \
           | docker login --username AWS --password-stdin 121861012711.dkr.ecr.ap-south-1.amazonaws.com
 
+
+
       - name: Build Docker Image
         run: docker build -f ./backend/Dockerfile -t backend-app ./backend
 
@@ -76,6 +78,6 @@ jobs:
           NEXT_PUBLIC_API_URL: ${{ env.FRONTEND_URL }}
           
           
-
+#####################
       - name: Sync Frontend to S3
         run: aws s3 sync ./frontend/out/ s3://pg-agi-frontend-env-${{ env.ENV }}/ --delete
