@@ -8,7 +8,7 @@ export default function Home() {
   const [apiUrl, setApiUrl] = useState('');
 
   useEffect(() => {
-    const API = "/api";
+    const API = process.env.NEXT_PUBLIC_API_URL;
 
     console.log("API URL:", API); // DEBUG check
 

@@ -72,7 +72,7 @@ jobs:
           npm install
           npm run build
         env:
-          NEXT_PUBLIC_API_URL: "http://backend-dev-alb-1916248219.ap-south-1.elb.amazonaws.com"
+          NEXT_PUBLIC_API_URL: "/api"
           
           
 #####################
