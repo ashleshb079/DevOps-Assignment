@@ -8,7 +8,7 @@ export default function Home() {
   const [apiUrl, setApiUrl] = useState('');
 
   useEffect(() => {
-    const API = process.env.NEXT_PUBLIC_API_URL;
+    const API = "/api";
 
     console.log("API URL:", API); // DEBUG check
 
@@ -23,13 +23,13 @@ export default function Home() {
     const fetchData = async () => {
       try {
         // Health check
-        const healthCheck = await axios.get(`${API}/api/health`);
+        const healthCheck = await axios.get(`${API}/health`);
 
         if (healthCheck.data.status === 'healthy') {
           setStatus('Backend is connected!');
 
           // Fetch message
-          const response = await axios.get(`${API}/api/message`);
+          const response = await axios.get(`${API}/message`);
           setMessage(response.data.message);
         } else {
           setStatus('Backend not healthy');
