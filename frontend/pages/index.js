@@ -54,7 +54,7 @@ export default function Home() {
       </Head>
 
       <main>
-        <h1>DevOps Assignments</h1>
+        <h1>DevOps Assignments NEW</h1>
 
         <div className="status">
           <p>
