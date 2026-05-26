@@ -74,6 +74,5 @@ jobs:
           NEXT_PUBLIC_API_URL: "/api"
           
           
-#####################
       - name: Sync Frontend to S3
         run: aws s3 sync ./frontend/out/ s3://pg-agi-frontend-env-${{ env.ENV }}/ --delete
