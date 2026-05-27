@@ -5,6 +5,7 @@ on:
     branches:
       - dev
       - staging
+      - prod
 
 
 jobs:
@@ -42,11 +43,15 @@ jobs:
           if [[ "${GITHUB_REF_NAME}" == "dev" ]]; then
             echo "ENV=dev" >> $GITHUB_ENV
             echo "TF_VAR_env=dev" >> $GITHUB_ENV
-            echo "FRONTEND_URL=https://d2b4juob8ltmwr.cloudfront.net" >> $GITHUB_ENV
-          else
+            echo "FRONTEND_URL=https://d8462k1p1fl7h.cloudfront.net" >> $GITHUB_ENV
+          elif
             echo "ENV=staging" >> $GITHUB_ENV
             echo "TF_VAR_env=staging" >> $GITHUB_ENV
-            echo "FRONTEND_URL=https://d3umkbb4uop226.cloudfront.net" >> $GITHUB_ENV
+            echo "FRONTEND_URL=https://d8462k1p1fl7h.cloudfront.net" >> $GITHUB_ENV
+          elif
+            echo "ENV=prod" >> $GITHUB_ENV
+            echo "TF_VAR_env=prod" >> $GITHUB_ENV
+            echo "FRONTEND_URL=https://d8462k1p1fl7h.cloudfront.net" >> $GITHUB_ENV
           fi
       - name: Debug Terraform path
         run: |

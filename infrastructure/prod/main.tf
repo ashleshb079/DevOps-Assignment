@@ -178,7 +178,7 @@ resource "aws_iam_role_policy_attachment" "ecs_exec_policy" {
 #######################
 
 resource "aws_ecs_task_definition" "task" {
-  family                   = "backend-prod-task"
+  family                   = "backend-staging-task"
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
   cpu                      = "256"
@@ -188,7 +188,7 @@ resource "aws_ecs_task_definition" "task" {
   container_definitions = jsonencode([
     {
       name  = "backend"
-      image = "314103481823.dkr.ecr.ap-south-1.amazonaws.com/backend-app:latest"
+      image = "121861012711.dkr.ecr.ap-south-1.amazonaws.com/backendapp:latest"
       portMappings = [{
         containerPort = 5000
       }]
@@ -196,6 +196,8 @@ resource "aws_ecs_task_definition" "task" {
     }
   ])
 }
+
+
 
 #######################
 # ECS Service
@@ -273,6 +275,19 @@ resource "aws_s3_bucket" "frontend_prod" {
   bucket = "pg-agi-frontend-prod"
 }
 
+
+#######################
+# Public Access Block (ADD THIS)
+#######################
+resource "aws_s3_bucket_public_access_block" "frontend_prod_block" {
+  bucket = aws_s3_bucket.frontend_prod.id
+
+  block_public_acls       = true
+  block_public_policy     = false
+  ignore_public_acls      = true
+  restrict_public_buckets = false
+}
+
 #######################
 # Website configuration
 #######################
@@ -305,4 +320,5 @@ resource "aws_s3_bucket_policy" "frontend_policy" {
       }
     ]
   })
+  depends_on = [aws_s3_bucket_public_access_block.frontend_prod_block]
 }
