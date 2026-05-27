@@ -44,11 +44,11 @@ jobs:
             echo "ENV=dev" >> $GITHUB_ENV
             echo "TF_VAR_env=dev" >> $GITHUB_ENV
             echo "FRONTEND_URL=https://d8462k1p1fl7h.cloudfront.net" >> $GITHUB_ENV
-          elif
+          elif [[ "${GITHUB_REF_NAME}" == "staging" ]]; then
             echo "ENV=staging" >> $GITHUB_ENV
             echo "TF_VAR_env=staging" >> $GITHUB_ENV
             echo "FRONTEND_URL=https://d8462k1p1fl7h.cloudfront.net" >> $GITHUB_ENV
-          elif
+          elif [[ "${GITHUB_REF_NAME}" == "prod" ]]; then
             echo "ENV=prod" >> $GITHUB_ENV
             echo "TF_VAR_env=prod" >> $GITHUB_ENV
             echo "FRONTEND_URL=https://d8462k1p1fl7h.cloudfront.net" >> $GITHUB_ENV
